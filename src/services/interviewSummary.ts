@@ -2,7 +2,8 @@ import type { AIProvider } from '../providers/AIProvider';
 import type { InterviewSession, InterviewSummary } from '../types';
 
 export class InterviewSummaryService {
-  constructor(private provider: AIProvider) {}
+  private provider: AIProvider;
+  constructor(provider: AIProvider) { this.provider = provider; }
 
   async summarize(session: InterviewSession): Promise<InterviewSummary> {
     try {

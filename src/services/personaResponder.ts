@@ -4,7 +4,8 @@ import type { Persona, Message, ProjectContext } from '../types';
 const MAX_HISTORY = 20;
 
 export class PersonaResponderService {
-  constructor(private provider: AIProvider) {}
+  private provider: AIProvider;
+  constructor(provider: AIProvider) { this.provider = provider; }
 
   async respond(
     persona: Persona,

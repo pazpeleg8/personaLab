@@ -13,7 +13,7 @@ import type {
   PlaybookStep,
   PersonaArchetype,
 } from '../types';
-import { RESPONSE_BANK, detectCategory, pickResponse } from '../data/mockResponses';
+import { detectCategory, pickResponse } from '../data/mockResponses';
 import { demoPersonas } from '../data/demoScenario';
 
 const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));

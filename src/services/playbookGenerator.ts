@@ -2,7 +2,8 @@ import type { AIProvider } from '../providers/AIProvider';
 import type { InterviewSession, Playbook } from '../types';
 
 export class PlaybookGeneratorService {
-  constructor(private provider: AIProvider) {}
+  private provider: AIProvider;
+  constructor(provider: AIProvider) { this.provider = provider; }
 
   async generate(session: InterviewSession): Promise<Playbook> {
     try {

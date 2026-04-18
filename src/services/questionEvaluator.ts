@@ -2,7 +2,8 @@ import type { AIProvider } from '../providers/AIProvider';
 import type { ProjectContext, QuestionEvaluation } from '../types';
 
 export class QuestionEvaluatorService {
-  constructor(private provider: AIProvider) {}
+  private provider: AIProvider;
+  constructor(provider: AIProvider) { this.provider = provider; }
 
   async evaluate(question: string, context: ProjectContext): Promise<QuestionEvaluation> {
     try {

@@ -2,7 +2,8 @@ import type { AIProvider } from '../providers/AIProvider';
 import type { ProjectContext, Persona } from '../types';
 
 export class PersonaGeneratorService {
-  constructor(private provider: AIProvider) {}
+  private provider: AIProvider;
+  constructor(provider: AIProvider) { this.provider = provider; }
 
   async generate(context: ProjectContext): Promise<Persona[]> {
     try {
