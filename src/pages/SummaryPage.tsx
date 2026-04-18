@@ -1,11 +1,41 @@
 import { AppShell } from '../components/layout/AppShell';
-import { PageHeader } from '../components/layout/PageHeader';
-import { SummaryCard } from '../components/summary/SummaryCard';
 import { HypothesisSummary } from '../components/summary/HypothesisSummary';
 import { NotableQuotes } from '../components/summary/NotableQuotes';
 import { QuestionQualityTable } from '../components/summary/QuestionQualityTable';
 import { PlaybookSection } from '../components/summary/PlaybookSection';
 import { useAppContext } from '../hooks/useAppContext';
+import { cn } from '../utils/cn';
+
+const ARCHETYPE_COLORS: Record<string, string> = {
+  'power-user': 'bg-purple-100 text-purple-700',
+  'casual-user': 'bg-emerald-100 text-emerald-700',
+  'skeptic': 'bg-rose-100 text-rose-700',
+  'early-adopter': 'bg-blue-100 text-blue-700',
+  'non-technical': 'bg-amber-100 text-amber-700',
+  'manager': 'bg-orange-100 text-orange-700',
+  'student': 'bg-teal-100 text-teal-700',
+};
+
+function StatPill({ value, label, color }: { value: number; label: string; color: string }) {
+  return (
+    <div className={cn('flex flex-col items-center px-5 py-3 rounded-xl', color)}>
+      <span className="text-2xl font-bold tabular-nums">{value}</span>
+      <span className="text-xs mt-0.5 opacity-80">{label}</span>
+    </div>
+  );
+}
+
+function Section({ title, icon, children }: { title: string; icon: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <div className="flex items-center gap-2 mb-3">
+        <span className="text-base">{icon}</span>
+        <h2 className="text-base font-semibold text-gray-800">{title}</h2>
+      </div>
+      {children}
+    </div>
+  );
+}
 
 export function SummaryPage() {
   const { state, dispatch } = useAppContext();
@@ -19,81 +49,135 @@ export function SummaryPage() {
   if (summaryLoading || !summary) {
     return (
       <AppShell currentPage="summary">
-        <div className="flex flex-col items-center justify-center py-20 gap-3">
-          <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm text-gray-500">Analyzing interview and generating summary…</p>
+        <div className="flex flex-col items-center justify-center py-24 gap-4">
+          <div className="w-10 h-10 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+          <div className="text-center">
+            <p className="text-sm font-medium text-gray-700">Analyzing your interview…</p>
+            <p className="text-xs text-gray-400 mt-1">Building summary, signals, and playbook</p>
+          </div>
         </div>
       </AppShell>
     );
   }
 
+  const questionCount = session?.messages.filter((m) => m.role === 'researcher').length ?? 0;
+  const forCount = summary.hypothesisSignals.filter((s) => s.direction === 'for').length;
+  const againstCount = summary.hypothesisSignals.filter((s) => s.direction === 'against').length;
+  const goodQuestions = summary.questionQualityReview.filter((q) => q.suggestedTag === 'good').length;
+  const problemQuestions = summary.questionQualityReview.filter((q) => q.suggestedTag === 'problematic').length;
+
   return (
     <AppShell currentPage="summary">
-      <PageHeader
-        title="Interview summary"
-        subtitle={session ? `Interview with ${session.persona.name} · ${session.context.product}` : 'Interview complete'}
-      />
-
-      <div className="flex flex-col gap-5">
-        <SummaryCard title="Executive summary">
-          <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
-            {summary.executiveSummary}
+      {/* Header */}
+      <div className="mb-8">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold text-indigo-500 uppercase tracking-wide mb-1">Interview summary</p>
+            <h1 className="text-2xl font-bold text-gray-900">
+              {session?.context.product ?? 'Interview'}
+            </h1>
+            {session && (
+              <div className="flex items-center gap-2 mt-1.5">
+                <div className="w-5 h-5 rounded-full bg-indigo-100 flex items-center justify-center text-xs font-bold text-indigo-600">
+                  {session.persona.name[0]}
+                </div>
+                <span className="text-sm text-gray-500">with {session.persona.name}</span>
+                <span className={cn('text-xs px-2 py-0.5 rounded-full font-medium', ARCHETYPE_COLORS[session.persona.archetype] ?? 'bg-gray-100 text-gray-600')}>
+                  {session.persona.archetype}
+                </span>
+              </div>
+            )}
           </div>
+          <div className="flex gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={() => dispatch({ type: 'NAVIGATE', payload: 'interview' })}
+              className="text-sm px-4 py-2 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 transition"
+            >
+              ← Back
+            </button>
+            <button
+              type="button"
+              onClick={handleReset}
+              className="text-sm px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition"
+            >
+              New interview
+            </button>
+          </div>
+        </div>
 
-          {summary.keyThemes.length > 0 && (
-            <div className="mt-4 pt-4 border-t border-gray-100">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Key themes</p>
-              <div className="flex flex-wrap gap-2">
+        {/* Stats bar */}
+        <div className="flex gap-3 mt-5 flex-wrap">
+          <StatPill value={questionCount} label="questions asked" color="bg-gray-100 text-gray-700" />
+          <StatPill value={forCount} label="signals for" color="bg-green-100 text-green-700" />
+          <StatPill value={againstCount} label="signals against" color="bg-red-100 text-red-700" />
+          <StatPill value={goodQuestions} label="good questions" color="bg-indigo-100 text-indigo-700" />
+          {problemQuestions > 0 && (
+            <StatPill value={problemQuestions} label="to improve" color="bg-amber-100 text-amber-700" />
+          )}
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-8">
+
+        {/* Executive summary */}
+        <Section title="What happened" icon="📋">
+          <div className="bg-white rounded-xl border border-gray-200 p-5">
+            <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">{summary.executiveSummary}</p>
+            {summary.keyThemes.length > 0 && (
+              <div className="mt-4 pt-4 border-t border-gray-100 flex flex-wrap gap-2">
                 {summary.keyThemes.map((t) => (
-                  <span key={t} className="text-xs px-2.5 py-1 bg-gray-100 text-gray-600 rounded-full">{t}</span>
+                  <span key={t} className="text-xs px-2.5 py-1 bg-indigo-50 text-indigo-600 rounded-full border border-indigo-100">{t}</span>
                 ))}
               </div>
-            </div>
-          )}
-        </SummaryCard>
+            )}
+          </div>
+        </Section>
 
-        <HypothesisSummary signals={summary.hypothesisSignals} />
+        {/* Hypothesis signals */}
+        <Section title="Hypothesis signals" icon="🧪">
+          <HypothesisSummary signals={summary.hypothesisSignals} />
+        </Section>
 
-        <NotableQuotes quotes={summary.notableQuotes} />
+        {/* Notable quotes */}
+        {summary.notableQuotes.length > 0 && (
+          <Section title="Notable quotes" icon="💬">
+            <NotableQuotes quotes={summary.notableQuotes} />
+          </Section>
+        )}
 
+        {/* Question quality */}
         {session && (
-          <QuestionQualityTable
-            session={session}
-            evaluations={Object.values(evaluations)}
-          />
+          <Section title="Question quality review" icon="🔍">
+            <QuestionQualityTable session={session} evaluations={Object.values(evaluations)} />
+          </Section>
         )}
 
-        {playbook && <PlaybookSection playbook={playbook} />}
-
+        {/* Next steps */}
         {summary.recommendedNextSteps.length > 0 && (
-          <SummaryCard title="Recommended next steps">
-            <ul className="space-y-2">
-              {summary.recommendedNextSteps.map((step, i) => (
-                <li key={i} className="flex gap-2.5 text-sm text-gray-700">
-                  <span className="text-blue-500 font-semibold shrink-0">{i + 1}.</span>
-                  {step}
-                </li>
-              ))}
-            </ul>
-          </SummaryCard>
+          <Section title="Recommended next steps" icon="→">
+            <div className="bg-white rounded-xl border border-gray-200 p-5">
+              <ul className="space-y-3">
+                {summary.recommendedNextSteps.map((step, i) => (
+                  <li key={i} className="flex gap-3 text-sm text-gray-700">
+                    <span className="w-5 h-5 rounded-full bg-indigo-100 text-indigo-600 font-semibold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                      {i + 1}
+                    </span>
+                    {step}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Section>
         )}
 
-        <div className="pt-2 flex justify-between items-center">
-          <button
-            type="button"
-            onClick={() => dispatch({ type: 'NAVIGATE', payload: 'interview' })}
-            className="text-sm text-gray-500 hover:text-gray-700 transition"
-          >
-            ← Back to interview
-          </button>
-          <button
-            type="button"
-            onClick={handleReset}
-            className="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
-          >
-            Start new interview
-          </button>
-        </div>
+        {/* Playbook */}
+        {playbook && (
+          <Section title="Interview playbook" icon="📖">
+            <PlaybookSection playbook={playbook} />
+          </Section>
+        )}
+
       </div>
     </AppShell>
   );
