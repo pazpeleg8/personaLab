@@ -8,6 +8,7 @@ export const KEYS = {
   SUMMARY: 'pil_summary',
   PLAYBOOK: 'pil_playbook',
   PAGE: 'pil_page',
+  SELECTED_PERSONA: 'pil_selected_persona',
   EVALUATIONS: 'pil_evaluations',
   API_KEY: 'pil_api_key',
 } as const;

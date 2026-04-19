@@ -49,14 +49,22 @@ interface Props {
 export function AppProvider({ services, children }: Props) {
   const [state, dispatch] = useReducer(reducer, initialState, (init) => {
     checkVersion();
+    const session = loadSlice<InterviewSession | null>(KEYS.SESSION, null);
+    const selectedPersona = loadSlice<Persona | null>(KEYS.SELECTED_PERSONA, null);
+    const restoredPage = loadSlice<AppState['currentPage']>(KEYS.PAGE, 'setup');
+    const currentPage: AppState['currentPage'] =
+      restoredPage === 'interview' && (!session || !selectedPersona) ? 'setup' :
+      restoredPage === 'persona-select' && loadSlice<Persona[]>(KEYS.PERSONAS, []).length === 0 ? 'setup' :
+      restoredPage;
     return {
       ...init,
       context: loadSlice<ProjectContext | null>(KEYS.CONTEXT, null),
       generatedPersonas: loadSlice<Persona[]>(KEYS.PERSONAS, []),
-      session: loadSlice<InterviewSession | null>(KEYS.SESSION, null),
+      selectedPersona,
+      session,
       summary: loadSlice<InterviewSummary | null>(KEYS.SUMMARY, null),
       playbook: loadSlice<Playbook | null>(KEYS.PLAYBOOK, null),
-      currentPage: loadSlice<AppState['currentPage']>(KEYS.PAGE, 'setup'),
+      currentPage,
       evaluations: loadSlice<Record<string, QuestionEvaluation>>(KEYS.EVALUATIONS, {}),
     };
   });
@@ -68,6 +76,10 @@ export function AppProvider({ services, children }: Props) {
   useEffect(() => {
     saveSlice(KEYS.PERSONAS, state.generatedPersonas);
   }, [state.generatedPersonas]);
+
+  useEffect(() => {
+    saveSlice(KEYS.SELECTED_PERSONA, state.selectedPersona);
+  }, [state.selectedPersona]);
 
   useEffect(() => {
     if (state.session) {
