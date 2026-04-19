@@ -25,6 +25,7 @@ export type AppAction =
   | { type: 'SET_PLAYBOOK'; payload: Playbook }
   | { type: 'SET_SUMMARY_LOADING'; payload: boolean }
   | { type: 'SET_EVALUATION'; payload: QuestionEvaluation }
+  | { type: 'ADD_CUSTOM_PERSONA'; payload: Persona }
   | { type: 'NAVIGATE'; payload: AppState['currentPage'] }
   | { type: 'LOAD_FROM_STORAGE'; payload: Partial<AppState> }
   | { type: 'RESET' };

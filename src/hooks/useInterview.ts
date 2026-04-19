@@ -75,13 +75,16 @@ export function useInterview() {
       endedAt: new Date().toISOString(),
     };
 
-    const [summary, playbook] = await Promise.all([
-      services.interviewSummary.summarize(endedSession),
-      services.playbookGenerator.generate(endedSession),
-    ]);
-
-    dispatch({ type: 'SET_SUMMARY', payload: summary });
-    dispatch({ type: 'SET_PLAYBOOK', payload: playbook });
+    try {
+      const [summary, playbook] = await Promise.all([
+        services.interviewSummary.summarize(endedSession),
+        services.playbookGenerator.generate(endedSession),
+      ]);
+      dispatch({ type: 'SET_SUMMARY', payload: summary });
+      dispatch({ type: 'SET_PLAYBOOK', payload: playbook });
+    } catch {
+      dispatch({ type: 'SET_SUMMARY_LOADING', payload: false });
+    }
   }, [session, dispatch, services]);
 
   return { sendQuestion, tagMessage, endInterview, suggestedQuestions };

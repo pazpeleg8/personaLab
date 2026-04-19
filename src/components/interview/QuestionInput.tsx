@@ -21,7 +21,7 @@ export function QuestionInput({ onSend, isDisabled, placeholder = 'Ask a questio
     <div className="flex gap-2 items-end">
       <textarea
         className={cn(
-          'flex-1 resize-none rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition',
+          'flex-1 resize-none rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition',
           isDisabled && 'bg-gray-50 opacity-60'
         )}
         placeholder={placeholder}
@@ -40,7 +40,7 @@ export function QuestionInput({ onSend, isDisabled, placeholder = 'Ask a questio
         type="button"
         onClick={submit}
         disabled={isDisabled || !value.trim()}
-        className="h-10 w-10 rounded-xl bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition"
+        className="h-10 w-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed transition"
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />

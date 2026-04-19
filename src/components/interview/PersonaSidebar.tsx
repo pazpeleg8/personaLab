@@ -1,15 +1,6 @@
 import type { Persona } from '../../types';
 import { cn } from '../../utils/cn';
-
-const ARCHETYPE_COLORS: Record<string, string> = {
-  'power-user': 'bg-purple-100 text-purple-700',
-  'casual-user': 'bg-green-100 text-green-700',
-  'skeptic': 'bg-red-100 text-red-700',
-  'early-adopter': 'bg-blue-100 text-blue-700',
-  'non-technical': 'bg-yellow-100 text-yellow-700',
-  'manager': 'bg-orange-100 text-orange-700',
-  'student': 'bg-teal-100 text-teal-700',
-};
+import { ArchetypeBadge } from '../shared/ArchetypeBadge';
 
 const TECH_DOTS: Record<string, number> = { low: 1, medium: 2, high: 3 };
 
@@ -32,15 +23,13 @@ export function PersonaSidebar({ persona }: Props) {
 
       <p className="text-xs text-gray-500 leading-snug mb-3">{persona.occupation}</p>
 
-      <span className={cn('text-xs font-medium px-2 py-0.5 rounded-full', ARCHETYPE_COLORS[persona.archetype] ?? 'bg-gray-100 text-gray-600')}>
-        {persona.archetype}
-      </span>
+      <ArchetypeBadge archetype={persona.archetype} />
 
       <div className="mt-3 pt-3 border-t border-gray-100">
         <p className="text-xs text-gray-400 mb-1">Tech comfort</p>
         <div className="flex gap-0.5">
           {[1, 2, 3].map((n) => (
-            <div key={n} className={cn('w-4 h-1.5 rounded-full', n <= TECH_DOTS[persona.techComfort] ? 'bg-blue-400' : 'bg-gray-200')} />
+            <div key={n} className={cn('w-4 h-1.5 rounded-full', n <= TECH_DOTS[persona.techComfort] ? 'bg-indigo-400' : 'bg-gray-200')} />
           ))}
         </div>
       </div>

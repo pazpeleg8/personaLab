@@ -34,7 +34,7 @@ export function PersonaSelectPage() {
 
       {personasLoading ? (
         <div className="flex flex-col items-center justify-center py-20 gap-3">
-          <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
           <p className="text-sm text-gray-500">Generating personas…</p>
         </div>
       ) : (
@@ -43,6 +43,7 @@ export function PersonaSelectPage() {
             personas={generatedPersonas}
             selectedPersona={selectedPersona}
             onSelect={(p) => dispatch({ type: 'SELECT_PERSONA', payload: p })}
+            onAddCustom={(p) => dispatch({ type: 'ADD_CUSTOM_PERSONA', payload: p })}
           />
 
           <div className="mt-6 flex gap-3 justify-between items-center">
@@ -57,7 +58,7 @@ export function PersonaSelectPage() {
               type="button"
               onClick={handleContinue}
               disabled={!selectedPersona}
-              className="px-6 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition"
+              className="px-6 py-2.5 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed transition"
             >
               Start interview →
             </button>

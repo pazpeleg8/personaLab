@@ -1,5 +1,7 @@
 # PersonaLab
 
+**Live demo:** https://pazpeleg8.github.io/personaLab/
+
 A persona interview simulation tool for product researchers. Prepare for user interviews by simulating conversations with AI-generated personas — refine your questions, surface hypothesis signals, and generate a repeatable interview playbook.
 
 ## What it does
@@ -16,7 +18,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173). Use the **Load demo scenario** button to instantly populate a realistic example (Linear Companion — AI decision logs for engineering teams).
+Open [http://localhost:5173](http://localhost:5173). Use the **Load demo scenario** button to instantly populate a realistic example (Nomo — an all-in-one workspace for freelancers).
 
 ## Enabling Claude AI
 

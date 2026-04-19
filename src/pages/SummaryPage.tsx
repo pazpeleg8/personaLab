@@ -4,21 +4,11 @@ import { NotableQuotes } from '../components/summary/NotableQuotes';
 import { QuestionQualityTable } from '../components/summary/QuestionQualityTable';
 import { PlaybookSection } from '../components/summary/PlaybookSection';
 import { useAppContext } from '../hooks/useAppContext';
-import { cn } from '../utils/cn';
-
-const ARCHETYPE_COLORS: Record<string, string> = {
-  'power-user': 'bg-purple-100 text-purple-700',
-  'casual-user': 'bg-emerald-100 text-emerald-700',
-  'skeptic': 'bg-rose-100 text-rose-700',
-  'early-adopter': 'bg-blue-100 text-blue-700',
-  'non-technical': 'bg-amber-100 text-amber-700',
-  'manager': 'bg-orange-100 text-orange-700',
-  'student': 'bg-teal-100 text-teal-700',
-};
+import { ArchetypeBadge } from '../components/shared/ArchetypeBadge';
 
 function StatPill({ value, label, color }: { value: number; label: string; color: string }) {
   return (
-    <div className={cn('flex flex-col items-center px-5 py-3 rounded-xl', color)}>
+    <div className={`flex flex-col items-center px-5 py-3 rounded-xl ${color}`}>
       <span className="text-2xl font-bold tabular-nums">{value}</span>
       <span className="text-xs mt-0.5 opacity-80">{label}</span>
     </div>
@@ -46,7 +36,7 @@ export function SummaryPage() {
     import('../utils/storage').then(({ clearAll }) => clearAll());
   };
 
-  if (summaryLoading || !summary) {
+  if (summaryLoading) {
     return (
       <AppShell currentPage="summary">
         <div className="flex flex-col items-center justify-center py-24 gap-4">
@@ -54,6 +44,33 @@ export function SummaryPage() {
           <div className="text-center">
             <p className="text-sm font-medium text-gray-700">Analyzing your interview…</p>
             <p className="text-xs text-gray-400 mt-1">Building summary, signals, and playbook</p>
+          </div>
+        </div>
+      </AppShell>
+    );
+  }
+
+  if (!summary) {
+    return (
+      <AppShell currentPage="summary">
+        <div className="flex flex-col items-center justify-center py-24 gap-4">
+          <p className="text-sm font-medium text-gray-700">Summary could not be generated.</p>
+          <p className="text-xs text-gray-400">The AI call may have failed or timed out.</p>
+          <div className="flex gap-3 mt-2">
+            <button
+              type="button"
+              onClick={() => dispatch({ type: 'NAVIGATE', payload: 'interview' })}
+              className="px-4 py-2 text-sm border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50"
+            >
+              ← Back to interview
+            </button>
+            <button
+              type="button"
+              onClick={handleReset}
+              className="px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+            >
+              Start over
+            </button>
           </div>
         </div>
       </AppShell>
@@ -82,9 +99,7 @@ export function SummaryPage() {
                   {session.persona.name[0]}
                 </div>
                 <span className="text-sm text-gray-500">with {session.persona.name}</span>
-                <span className={cn('text-xs px-2 py-0.5 rounded-full font-medium', ARCHETYPE_COLORS[session.persona.archetype] ?? 'bg-gray-100 text-gray-600')}>
-                  {session.persona.archetype}
-                </span>
+                <ArchetypeBadge archetype={session.persona.archetype} />
               </div>
             )}
           </div>

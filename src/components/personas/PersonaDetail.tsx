@@ -1,15 +1,6 @@
 import type { Persona } from '../../types';
 import { cn } from '../../utils/cn';
-
-const ARCHETYPE_COLORS: Record<string, string> = {
-  'power-user': 'bg-purple-100 text-purple-700',
-  'casual-user': 'bg-green-100 text-green-700',
-  'skeptic': 'bg-red-100 text-red-700',
-  'early-adopter': 'bg-blue-100 text-blue-700',
-  'non-technical': 'bg-yellow-100 text-yellow-700',
-  'manager': 'bg-orange-100 text-orange-700',
-  'student': 'bg-teal-100 text-teal-700',
-};
+import { ArchetypeBadge } from '../shared/ArchetypeBadge';
 
 const TECH_DOTS: Record<string, number> = { low: 1, medium: 2, high: 3 };
 
@@ -28,9 +19,7 @@ export function PersonaDetail({ persona, onClose }: Props) {
         <div className="p-6 border-b border-gray-100 flex items-start justify-between">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className={cn('text-xs font-medium px-2 py-0.5 rounded-full', ARCHETYPE_COLORS[persona.archetype] ?? 'bg-gray-100 text-gray-600')}>
-                {persona.archetype}
-              </span>
+              <ArchetypeBadge archetype={persona.archetype} />
               <span className="text-xs text-gray-400">{persona.age} years old</span>
             </div>
             <h2 className="text-lg font-semibold text-gray-900">{persona.name}</h2>
@@ -68,7 +57,7 @@ export function PersonaDetail({ persona, onClose }: Props) {
             <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Tech comfort</h3>
             <div className="flex gap-1">
               {[1, 2, 3].map((n) => (
-                <div key={n} className={cn('w-6 h-2 rounded-full', n <= TECH_DOTS[persona.techComfort] ? 'bg-blue-500' : 'bg-gray-200')} />
+                <div key={n} className={cn('w-6 h-2 rounded-full', n <= TECH_DOTS[persona.techComfort] ? 'bg-indigo-400' : 'bg-gray-200')} />
               ))}
               <span className="ml-2 text-xs text-gray-500 capitalize">{persona.techComfort}</span>
             </div>

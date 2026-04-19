@@ -9,6 +9,7 @@ export const KEYS = {
   PLAYBOOK: 'pil_playbook',
   PAGE: 'pil_page',
   EVALUATIONS: 'pil_evaluations',
+  API_KEY: 'pil_api_key',
 } as const;
 
 export function saveSlice(key: string, value: unknown): void {

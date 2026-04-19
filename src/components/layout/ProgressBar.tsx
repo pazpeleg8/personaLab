@@ -36,7 +36,7 @@ export function ProgressBar({ currentPage }: Props) {
                 className={cn(
                   'w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold transition-colors',
                   isCompleted && 'bg-gray-900 text-white',
-                  isCurrent && 'bg-blue-600 text-white ring-4 ring-blue-100',
+                  isCurrent && 'bg-indigo-600 text-white ring-4 ring-indigo-100',
                   !isCompleted && !isCurrent && 'bg-gray-100 text-gray-400'
                 )}
               >
@@ -51,7 +51,7 @@ export function ProgressBar({ currentPage }: Props) {
               <span
                 className={cn(
                   'text-xs whitespace-nowrap',
-                  isCurrent ? 'text-blue-600 font-medium' : isCompleted ? 'text-gray-500' : 'text-gray-400'
+                  isCurrent ? 'text-indigo-600 font-medium' : isCompleted ? 'text-gray-500' : 'text-gray-400'
                 )}
               >
                 {step.label}

@@ -11,7 +11,7 @@ interface Props {
 export function AppShell({ currentPage, children, fullHeight }: Props) {
   return (
     <div className={fullHeight ? 'h-screen flex flex-col bg-gray-50' : 'min-h-screen bg-gray-50'}>
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-10 shrink-0">
+      <header className="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-10 shrink-0">
         <div className="max-w-5xl mx-auto px-6 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">

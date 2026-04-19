@@ -25,15 +25,15 @@ export function MessageBubble({ message, personaName, onTag, isLastResearcher }:
           className={cn(
             'max-w-sm rounded-2xl px-4 py-2.5 text-sm leading-relaxed',
             isResearcher
-              ? 'bg-blue-600 text-white rounded-br-sm'
+              ? 'bg-indigo-600 text-white rounded-br-sm'
               : 'bg-white border border-gray-200 text-gray-800 rounded-bl-sm shadow-sm'
           )}
         >
           {message.content}
         </div>
         {isResearcher && (
-          <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center shrink-0 mb-0.5">
-            <span className="text-xs font-semibold text-blue-600">Y</span>
+          <div className="w-7 h-7 rounded-full bg-indigo-100 flex items-center justify-center shrink-0 mb-0.5">
+            <span className="text-xs font-semibold text-indigo-600">Y</span>
           </div>
         )}
       </div>

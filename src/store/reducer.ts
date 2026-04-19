@@ -9,6 +9,9 @@ export function reducer(state: AppState, action: AppAction): AppState {
     case 'SET_PERSONAS':
       return { ...state, generatedPersonas: action.payload, personasLoading: false };
 
+    case 'ADD_CUSTOM_PERSONA':
+      return { ...state, generatedPersonas: [...state.generatedPersonas, action.payload] };
+
     case 'SET_PERSONAS_LOADING':
       return { ...state, personasLoading: action.payload };
 

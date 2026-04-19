@@ -5,11 +5,15 @@ import { PersonaSelectPage } from './pages/PersonaSelectPage';
 import { InterviewPage } from './pages/InterviewPage';
 import { SummaryPage } from './pages/SummaryPage';
 import { MockProvider } from './providers/MockProvider';
+import { ClaudeProvider } from './providers/ClaudeProvider';
 import { createServices } from './services';
 
-// To use Claude: replace MockProvider with ClaudeProvider from './providers/ClaudeProvider'
-// and pass import.meta.env.VITE_ANTHROPIC_API_KEY to its constructor.
-const provider = new MockProvider();
+function buildProvider() {
+  const key = localStorage.getItem('pil_api_key');
+  if (key) return new ClaudeProvider(key);
+  return new MockProvider();
+}
+const provider = buildProvider();
 const services = createServices(provider);
 
 function Router() {
