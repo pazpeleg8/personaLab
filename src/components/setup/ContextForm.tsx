@@ -92,7 +92,7 @@ export function ContextForm({ initialValues, onSubmit, isLoading }: Props) {
             value={values.problem}
             onChange={set('problem')}
             error={errors.problem}
-          />
+              />
           <FieldGroup
             type="textarea"
             label="Solution"
@@ -101,7 +101,7 @@ export function ContextForm({ initialValues, onSubmit, isLoading }: Props) {
             value={values.solution}
             onChange={set('solution')}
             error={errors.solution}
-          />
+              />
           <FieldGroup
             type="textarea"
             label="Hypothesis"
@@ -110,7 +110,7 @@ export function ContextForm({ initialValues, onSubmit, isLoading }: Props) {
             value={values.hypothesis}
             onChange={set('hypothesis')}
             error={errors.hypothesis}
-          />
+              />
         </div>
       </div>
 
@@ -124,7 +124,7 @@ export function ContextForm({ initialValues, onSubmit, isLoading }: Props) {
             required={false}
             value={values.segment}
             onChange={set('segment')}
-          />
+              />
           <FieldGroup
             type="textarea"
             label="Expected user response"
@@ -132,7 +132,7 @@ export function ContextForm({ initialValues, onSubmit, isLoading }: Props) {
             required={false}
             value={values.expectedResponse}
             onChange={set('expectedResponse')}
-          />
+              />
         </div>
       </div>
 

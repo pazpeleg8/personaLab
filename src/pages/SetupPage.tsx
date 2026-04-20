@@ -3,7 +3,7 @@ import { ContextForm } from '../components/setup/ContextForm';
 import { DemoButton } from '../components/setup/DemoButton';
 import { useAppContext } from '../hooks/useAppContext';
 import { demoContext, demoPersonas } from '../data/demoScenario';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { ProjectContext } from '../types';
 import { KEYS } from '../utils/storage';
 
@@ -37,6 +37,12 @@ export function SetupPage() {
     localStorage.removeItem(KEYS.API_KEY);
     window.location.reload();
   };
+
+  useEffect(() => {
+    if (!usingClaude && !demoLoaded) {
+      loadDemo();
+    }
+  }, []);
 
   const handleSubmit = async (context: ProjectContext) => {
     setIsLoading(true);

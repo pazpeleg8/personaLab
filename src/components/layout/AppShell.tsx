@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { ProgressBar } from './ProgressBar';
 import type { AppState } from '../../store/AppContext';
+import { KEYS } from '../../utils/storage';
 
 interface Props {
   currentPage: AppState['currentPage'];
@@ -9,8 +10,18 @@ interface Props {
 }
 
 export function AppShell({ currentPage, children, fullHeight }: Props) {
+  const storedKey = localStorage.getItem(KEYS.API_KEY) ?? '';
+  const usingClaude = storedKey.length > 0;
+
   return (
     <div className={fullHeight ? 'h-screen flex flex-col bg-gray-50' : 'min-h-screen bg-gray-50'}>
+      {!usingClaude && (
+        <div className="bg-amber-50 border-b border-amber-200 px-6 py-2.5 sticky top-0 z-20">
+          <p className="text-sm text-amber-800 max-w-5xl mx-auto">
+            <span className="font-semibold">Demo Mode:</span> Using simulated personas and responses. Add your Anthropic API key for real AI-powered personas.
+          </p>
+        </div>
+      )}
       <header className="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-10 shrink-0">
         <div className="max-w-5xl mx-auto px-6 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
